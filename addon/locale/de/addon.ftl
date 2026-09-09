@@ -91,6 +91,7 @@ templatePicker-itemData-title = Wähle die Datenquelle der Eintrags-Vorlage.
 
 alert-notValidCollectionError = Wähle bitte eine gültige Sammlung.
 alert-notValidParentItemError = Kein gültiger übergeordneter Eintrag.
+alert-noFilePathError = Keine Datei für das ausgewählte Element gefunden.
 alert-syncImportedNotes = Importierte Notizen mit Markdown-Dateien synchronisiert belassen?
 alert-linkCreator-emptyNote = Kann keinen Link von/zu leerer Notiz erstellen. 
 alert-templateEditor-shouldImport = Es scheint als würdest Du versuchen, einen Notizenvorlagen-Freigabecode direkt zu speichern. Möchtest du stattdessen die Vorlage importieren?

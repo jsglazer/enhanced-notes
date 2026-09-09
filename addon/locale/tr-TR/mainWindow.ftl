@@ -4,6 +4,8 @@ menuTools-templateEditor =
     .label = Şablon Düzenleyici
 menuTools-importTemplateFromClipboard =
     .label = Panodan Yeni Şablon
+menuTools-copyFilePath =
+    .label = Dosya Yolunu Kopyala
 
 menuFile-exportTemplate =
     .label = Şablonu Dışa Aktar...

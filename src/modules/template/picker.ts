@@ -122,7 +122,19 @@ async function createTemplateNoteCallback(name: string) {
     );
   }
   if (createdNoteId) {
-    await addon.hooks.onOpenNote(createdNoteId, "tab");
+    // U24: open the freshly created note in the addon's own side-panel
+    // preview (edit mode) rather than a full note tab, so it's immediately
+    // editable without taking over the window. Falls back to a tab if no
+    // current-tab context is available to preview against.
+    const workspaceUID = Zotero.getMainWindow().Zotero_Tabs?.getTabInfo()?.id;
+    if (workspaceUID) {
+      await addon.hooks.onOpenNote(createdNoteId, "preview", {
+        workspaceUID,
+        forceTakeover: true,
+      });
+    } else {
+      await addon.hooks.onOpenNote(createdNoteId, "tab");
+    }
   }
 }
 

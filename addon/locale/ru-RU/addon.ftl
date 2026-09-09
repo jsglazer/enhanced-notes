@@ -91,6 +91,7 @@ templatePicker-itemData-title=Выбрать источник данных ша�
 
 alert-notValidCollectionError=Выберите валидную коллекцию.
 alert-notValidParentItemError=Нет валидного родительского элемента.
+alert-noFilePathError=Файл для выбранного элемента не найден.
 alert-syncImportedNotes = Синхронизировать импортированные заметки с файлами Markdown?
 alert-linkCreator-emptyNote = Cannot create link from/to an empty note. 
 alert-templateEditor-shouldImport = Вы пытаетесь сохранить код шаблона заметки. Хотите импортировать его как шаблон?

@@ -4,6 +4,8 @@ menuTools-templateEditor =
     .label = 模板编辑器
 menuTools-importTemplateFromClipboard =
     .label = 从剪贴板新建模板
+menuTools-copyFilePath =
+    .label = 复制文件路径
 
 menuFile-exportTemplate =
     .label = 导出模板...

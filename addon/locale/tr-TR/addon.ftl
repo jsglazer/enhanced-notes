@@ -91,6 +91,7 @@ templatePicker-itemData-title = Eser Şablonu İçin Veri Kaynağı Seç
 
 alert-notValidCollectionError = Lütfen geçerli bir derme seçin.
 alert-notValidParentItemError = Geçerli ana eser yok.
+alert-noFilePathError = Seçili öge için dosya bulunamadı.
 alert-syncImportedNotes = İçe aktarılmış notları Markdown dosyalarıyla eşitlemede tutmak ister misiniz?
 alert-linkCreator-emptyNote = Boş bir nota/nottan bağlantı oluşturulamaz. note. 
 alert-templateEditor-shouldImport = Şablon kodunu doğrudan kaydetmeye çalışıyorsunuz gibi görünüyor. Şablon olarak içe aktarmak ister misiniz?

@@ -91,6 +91,7 @@ templatePicker-itemData-title = Choose Item Template Data Source
 
 alert-notValidCollectionError = Please select a valid collection.
 alert-notValidParentItemError = No valid parent item.
+alert-noFilePathError = No file found for the selected item.
 alert-syncImportedNotes = Keep imported notes in sync with Markdown files?
 alert-linkCreator-emptyNote = Cannot create link from/to an empty note. 
 alert-templateEditor-shouldImport = Seems like you are trying to directly save a note template share code. Do you want to import it as a template?

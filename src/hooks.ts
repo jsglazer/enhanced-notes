@@ -46,6 +46,7 @@ import {
   createNoteFromMD,
   createNote,
 } from "./modules/createNote";
+import { copyItemFilePath } from "./modules/copyFilePath";
 import { createZToolkit } from "./utils/ztoolkit";
 import { waitUtilAsync } from "./utils/wait";
 import { initSyncList } from "./modules/sync/api";
@@ -401,6 +402,8 @@ const onCreateNote = createNote;
 
 const onCreateNoteFromMD = createNoteFromMD;
 
+const onCopyItemFilePath = copyItemFilePath;
+
 const onShowUserGuide = showUserGuide;
 
 function onShowLinkCreator() {
@@ -459,6 +462,7 @@ export default {
   onCreateNoteFromTemplate,
   onCreateNoteFromMD,
   onCreateNote,
+  onCopyItemFilePath,
   onShowUserGuide,
   onShowLinkCreator,
   onSettingsSyncPush,

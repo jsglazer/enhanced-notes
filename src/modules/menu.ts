@@ -69,6 +69,14 @@ export function registerMenus() {
           addon.hooks.onImportTemplateFromClipboard();
         },
       },
+      {
+        menuType: "menuitem",
+        l10nID: `${config.addonRef}-menuTools-copyFilePath`,
+        icon: `chrome://${config.addonRef}/content/icons/favicon.png`,
+        onCommand: () => {
+          addon.hooks.onCopyItemFilePath();
+        },
+      },
     ],
   });
 

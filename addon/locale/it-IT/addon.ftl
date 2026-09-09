@@ -87,6 +87,7 @@ templatePicker-itemData-title = Scegli la sorgente dei dati del template dell'el
 
 alert-notValidCollectionError = Si prega di scegliere una collezione valida.
 alert-notValidParentItemError = Nessun elemento genitore valido.
+alert-noFilePathError = Nessun file trovato per l'elemento selezionato.
 alert-syncImportedNotes = Si desidera sincronizzare le note importate con i file markdown?
 alert-linkCreator-emptyNote = Non è possibile creare un link da/a una nota vuota. 
 alert-templateEditor-shouldImport = Sembra che tu stia cercando di salvare direttamente un codice di condivisione di un template di nota. Vuoi importarlo come template?

@@ -5,6 +5,7 @@
 export type FluentMessageId =
   | 'about-title'
   | 'alert-linkCreator-emptyNote'
+  | 'alert-noFilePathError'
   | 'alert-notValidCollectionError'
   | 'alert-notValidParentItemError'
   | 'alert-syncImportedNotes'
@@ -137,6 +138,7 @@ export type FluentMessageId =
   | 'menuItem-exportCurrentNote'
   | 'menuItem-newItemNoteFromTemplate'
   | 'menuTab-moveNewWindow'
+  | 'menuTools-copyFilePath'
   | 'menuTools-importTemplateFromClipboard'
   | 'menuTools-linkCreator'
   | 'menuTools-syncManager'

@@ -4,6 +4,8 @@ menuTools-templateEditor =
     .label = Vorlagen-Editor
 menuTools-importTemplateFromClipboard =
     .label = Neue Vorlage aus der Zwischenablage
+menuTools-copyFilePath =
+    .label = Dateipfad kopieren
 
 menuFile-exportTemplate =
     .label = Vorlage exportieren...

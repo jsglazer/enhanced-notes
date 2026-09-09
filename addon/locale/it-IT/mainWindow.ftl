@@ -4,6 +4,8 @@ menuTools-templateEditor =
     .label = Editor Template
 menuTools-importTemplateFromClipboard =
     .label = Nuovo Template dagli Appunti
+menuTools-copyFilePath =
+    .label = Copia Percorso File
 
 menuFile-exportTemplate =
     .label = Esporta Template...

@@ -4,6 +4,8 @@ menuTools-templateEditor =
     .label = Редактор шаблонов
 menuTools-importTemplateFromClipboard =
     .label = Новый шаблон из буфера обмена
+menuTools-copyFilePath =
+    .label = Копировать путь к файлу
 
 menuFile-exportTemplate =
     .label = Экспорт шаблона...
