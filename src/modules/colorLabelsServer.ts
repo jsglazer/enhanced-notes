@@ -43,6 +43,16 @@ const ENDPOINT_PATH = "/enhanced-notes/color-labels";
 // so this works regardless of which dispatch style the running client uses.
 class ColorLabelsEndpoint {
   supportedMethods = ["GET"];
+  // Zotero 10 drops, with no response at all, any request whose User-Agent
+  // starts with `Mozilla/` or that carries an Origin header, unless the
+  // endpoint opts in or the caller sends `Zotero-Allowed-Request`. That
+  // silently cut off real callers: annotation-compositor's in-Zotero
+  // `fetch()` (a Gecko UA) and `fetch()`/`requestUrl` from Obsidian scripts.
+  // Opting in is safe for all three Enhanced Notes endpoints: Zotero only
+  // returns CORS headers to its bookmarklet origin, so a web page can neither
+  // read these responses nor get past the preflight a JSON POST needs, and a
+  // no-cors POST arrives as text/plain, which `supportedDataTypes` rejects.
+  allowRequestsFromUnsafeWebContent = true;
 
   init(
     _optionsOrData: unknown,

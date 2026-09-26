@@ -51,6 +51,8 @@ interface LinkResult {
 class LinkEndpoint {
   supportedMethods = ["POST"];
   supportedDataTypes = ["application/json"];
+  // See `allowRequestsFromUnsafeWebContent` in colorLabelsServer.ts.
+  allowRequestsFromUnsafeWebContent = true;
 
   // Both dispatch styles, for the same reason tagServer supports them:
   // depending on client version Zotero.Server either awaits a promise of

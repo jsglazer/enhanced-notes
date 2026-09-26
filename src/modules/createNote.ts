@@ -1,5 +1,6 @@
 import { getString } from "../utils/locale";
 import { formatPath } from "../utils/str";
+import { getSelectedCollectionTreeRows } from "../utils/selection";
 
 export { createNoteFromTemplate, createNoteFromMD, createNote };
 
@@ -150,13 +151,16 @@ async function createNote(
     Zotero.getMainWindow().alert(getString("alert-notValidCollectionError"));
     return false;
   }
-  const cRow = cView.selectedTreeRow;
-  if (["library", "group", "collection"].includes(cRow.type)) {
+  // A new note can only land in one place, so a Zotero 10 multi-row
+  // collection selection is treated like any other non-target selection.
+  const cRows = getSelectedCollectionTreeRows(ZoteroPane);
+  const cRow = cRows.length === 1 ? cRows[0] : undefined;
+  if (cRow && ["library", "group", "collection"].includes(cRow.type)) {
     if (options.dryRun) {
       return true;
     }
     noteItem = new Zotero.Item("note");
-    noteItem.libraryID = ZoteroPane.getSelectedLibraryID();
+    noteItem.libraryID = cRow.ref.libraryID;
     if (cRow.type === "collection") {
       noteItem.addToCollection(cRow.ref.id);
     }

@@ -50,6 +50,8 @@ interface TagResult {
 class TagEndpoint {
   supportedMethods = ["POST"];
   supportedDataTypes = ["application/json"];
+  // See `allowRequestsFromUnsafeWebContent` in colorLabelsServer.ts.
+  allowRequestsFromUnsafeWebContent = true;
 
   init(
     optionsOrData: unknown,

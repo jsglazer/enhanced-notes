@@ -1,6 +1,7 @@
 import * as YAML from "yaml";
 import { getNoteLink } from "../../utils/link";
 import { renderNoteHTML } from "../../utils/note";
+import { getSelectedLibraryIDs } from "../../utils/selection";
 
 export { renderTemplatePreview };
 
@@ -149,9 +150,14 @@ async function getPreviewFallbackItem(): Promise<Zotero.Item | undefined> {
     if (inView) {
       return inView;
     }
-    const libraryID = pane.getSelectedLibraryID();
-    const all = await Zotero.Items.getAll(libraryID);
-    return (all || []).find((it) => it.isRegularItem());
+    for (const libraryID of getSelectedLibraryIDs(pane)) {
+      const all = await Zotero.Items.getAll(libraryID);
+      const found = (all || []).find((it) => it.isRegularItem());
+      if (found) {
+        return found;
+      }
+    }
+    return undefined;
   } catch (e) {
     return undefined;
   }

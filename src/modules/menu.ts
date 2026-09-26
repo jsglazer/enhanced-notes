@@ -22,6 +22,21 @@ function setShortcutKey(
   }
 }
 
+// The collections selected in a main/library/collection menu context. Zotero
+// 10 exposes `collectionTreeRows` (its singular `collectionTreeRow` throws on a
+// multi-row selection); Zotero 8/9 only have the singular property. Other row
+// types (libraries, saved searches) can be selected alongside collections in
+// Zotero 10, so they are filtered out rather than assumed away.
+function getContextCollections(context: any): Zotero.Collection[] {
+  const rows: { type: string; ref: any }[] =
+    "collectionTreeRows" in context
+      ? context.collectionTreeRows || []
+      : [context.collectionTreeRow].filter(Boolean);
+  return rows
+    .filter((row) => row?.type === "collection")
+    .map((row) => row.ref as Zotero.Collection);
+}
+
 export function registerMenus() {
   Zotero.MenuManager.registerMenu({
     menuID: `${config.addonRef}-menuTools`,
@@ -135,19 +150,23 @@ export function registerMenus() {
         menuType: "menuitem",
         l10nID: `${config.addonRef}-menuCollection-exportNotes`,
         icon: `chrome://${config.addonRef}/content/icons/favicon.png`,
+        // Zotero 10 menu contexts carry the whole multi-row selection as
+        // `collectionTreeRows`; reading the old singular `collectionTreeRow`
+        // throws when more than one row is selected.
         onShowing: (_, context) => {
-          context.setVisible(context.collectionTreeRow?.type === "collection");
+          context.setVisible(getContextCollections(context).length > 0);
         },
         onCommand: (_, context) => {
-          const collection = context.collectionTreeRow?.ref as
-            | Zotero.Collection
-            | undefined;
-          if (!collection) {
+          const itemIDs = new Set<number>();
+          for (const collection of getContextCollections(context)) {
+            for (const id of collection.getChildItems(true, false)) {
+              itemIDs.add(id);
+            }
+          }
+          if (!itemIDs.size) {
             return;
           }
-          addon.hooks.onShowExportNoteOptions(
-            collection.getChildItems(true, false),
-          );
+          addon.hooks.onShowExportNoteOptions([...itemIDs]);
         },
       },
     ],

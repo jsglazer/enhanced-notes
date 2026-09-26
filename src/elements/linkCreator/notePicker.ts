@@ -11,7 +11,16 @@ import {
 
 const _require = window.require;
 const CollectionTree = _require("chrome://zotero/content/collectionTree.js");
-const ItemTree = _require("chrome://zotero/content/itemTree.js");
+// Zotero 10 split ItemTree: changeCollectionTreeRow() and the collection-view
+// row loading now live on CollectionViewItemTree, and a bare ItemTree can no
+// longer show a collection. Zotero 8/9 have no such module, so fall back.
+const ItemTree = (() => {
+  try {
+    return _require("chrome://zotero/content/collectionViewItemTree.js");
+  } catch (e) {
+    return _require("chrome://zotero/content/itemTree.js");
+  }
+})();
 const { getCSSItemTypeIcon } = _require("components/icons");
 
 const persistKey = "persist.notePicker";
@@ -156,12 +165,14 @@ export class NotePicker extends PluginCEBase {
     );
     this.itemsView.isSelectable = (index: number, selectAll = false) => {
       const row = this.itemsView.getRow(index);
-      if (!row) {
+      // Zotero 10 inserts library header/spacer rows that carry no item
+      // @ts-ignore
+      if (!row || row.isObjectRow === false) {
         return false;
       }
       // @ts-ignore
       if (!row.ref.isNote()) return false;
-      if (this.itemsView.collectionTreeRow.isTrash()) {
+      if (isTrashView(this.itemsView)) {
         // @ts-ignore
         return row.ref.deleted;
       } else {
@@ -357,11 +368,8 @@ export class NotePicker extends PluginCEBase {
     );
     if (!this.collectionsView.selection.count) return;
     // Collection not changed
-    if (
-      this.itemsView &&
-      this.itemsView.collectionTreeRow &&
-      this.itemsView.collectionTreeRow.id == collectionTreeRow.id
-    ) {
+    const shownRowIDs = this.itemsView ? getShownRowIDs(this.itemsView) : [];
+    if (shownRowIDs.length === 1 && shownRowIDs[0] == collectionTreeRow.id) {
       return;
     }
     // @ts-ignore
@@ -536,6 +544,23 @@ export class NotePicker extends PluginCEBase {
       this._collectionsList.style.width = state.collectionsListWidth;
     }
   }
+}
+
+// Zotero 10 removed ItemTree#collectionTreeRow: the view kind is the
+// `viewMode` string and the shown rows are the `collectionTreeRows` array.
+// Zotero 8/9 only have the singular row.
+function isTrashView(itemsView: any): boolean {
+  if (typeof itemsView.viewMode === "string") {
+    return itemsView.viewMode === "trash";
+  }
+  return !!itemsView.collectionTreeRow?.isTrash();
+}
+
+function getShownRowIDs(itemsView: any): string[] {
+  const rows: { id: string }[] = Array.isArray(itemsView.collectionTreeRows)
+    ? itemsView.collectionTreeRows
+    : [itemsView.collectionTreeRow].filter(Boolean);
+  return rows.map((row) => row.id);
 }
 
 function arraysEqual(arr1: number[], arr2: number[]): boolean {
