@@ -83,6 +83,13 @@ editor-toolbar-settings-openParent=Открыть вложение
 editor-toolbar-settings-export=Экспортировать текущую заметку...
 editor-toolbar-settings-refreshSyncing=Синхронизировать сейчас
 editor-toolbar-settings-updateRelatedNotes = Update Related Notes
+editor-toolbar-settings-viewMarkdown = View as Markdown
+editor-toolbar-settings-viewRendered = View Rendered Note
+editor-markdownView-label = Markdown (read-only)
+editor-markdownView-copy = Copy Markdown
+editor-markdownView-copied = Markdown copied
+editor-markdownView-loading = Converting…
+editor-markdownView-error = Could not convert this note to Markdown:
 
 templatePicker-itemData-info=выбрано в библиотеке. Выберите источник данных:
 templatePicker-itemData-useLibrary=Использовать выбранные записи в библиотеке

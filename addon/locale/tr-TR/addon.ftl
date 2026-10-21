@@ -83,6 +83,13 @@ editor-toolbar-settings-openParent = Eki Aç
 editor-toolbar-settings-export = Bu Notu Dışa Aktar...
 editor-toolbar-settings-refreshSyncing = Eşitle
 editor-toolbar-settings-updateRelatedNotes = İlişkili Notları Güncelle
+editor-toolbar-settings-viewMarkdown = View as Markdown
+editor-toolbar-settings-viewRendered = View Rendered Note
+editor-markdownView-label = Markdown (read-only)
+editor-markdownView-copy = Copy Markdown
+editor-markdownView-copied = Markdown copied
+editor-markdownView-loading = Converting…
+editor-markdownView-error = Could not convert this note to Markdown:
 
 templatePicker-itemData-info = kütphanede seçili. Lütfen veri kaynağı seçin:
 templatePicker-itemData-useLibrary = Seçili ögeleri kitaplıkta kullan

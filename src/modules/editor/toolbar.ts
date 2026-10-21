@@ -16,6 +16,7 @@ import {
   getEditorItem,
   getEditorWindow,
 } from "./adapter";
+import { isMarkdownViewOpen, toggleMarkdownView } from "./markdownView";
 
 export async function initEditorToolbar(editor: Zotero.EditorInstance) {
   if (editor._disableUI) {
@@ -267,6 +268,25 @@ async function getMenuData(editor: Zotero.EditorInstance) {
       ]),
     );
   }
+
+  // U26: read-only markdown pane. Appended last so the fixed splice index used
+  // for "Sync Now" below is unaffected.
+  settingsMenuData.push(
+    ...(<PopupData[]>[
+      {
+        type: "splitter",
+      },
+      {
+        id: makeId("settings-viewMarkdown"),
+        text: isMarkdownViewOpen(editor)
+          ? getString("editor-toolbar-settings-viewRendered")
+          : getString("editor-toolbar-settings-viewMarkdown"),
+        callback: (e) => {
+          toggleMarkdownView(e.editor);
+        },
+      },
+    ]),
+  );
 
   if (addon.api.sync.isSyncNote(noteItem.id)) {
     settingsMenuData.splice(5, 0, {

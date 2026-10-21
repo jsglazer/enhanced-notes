@@ -83,6 +83,13 @@ editor-toolbar-settings-openParent=打开附件
 editor-toolbar-settings-export=导出当前笔记...
 editor-toolbar-settings-refreshSyncing=立即同步
 editor-toolbar-settings-updateRelatedNotes = 更新关联笔记
+editor-toolbar-settings-viewMarkdown = View as Markdown
+editor-toolbar-settings-viewRendered = View Rendered Note
+editor-markdownView-label = Markdown (read-only)
+editor-markdownView-copy = Copy Markdown
+editor-markdownView-copied = Markdown copied
+editor-markdownView-loading = Converting…
+editor-markdownView-error = Could not convert this note to Markdown:
 
 templatePicker-itemData-info=在文库中被选中。请选择模板数据源：
 templatePicker-itemData-useLibrary=使用文库中选中的条目

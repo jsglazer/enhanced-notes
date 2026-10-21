@@ -19,6 +19,7 @@ import {
 } from "./inject";
 import { initEditorPlugins } from "./plugins";
 import { initEditorMenu } from "./menu";
+import { resetMarkdownView } from "./markdownView";
 import { initEditorPopup } from "./popup";
 import { initEditorToolbar } from "./toolbar";
 
@@ -105,6 +106,7 @@ async function onEditorInstanceCreated(editor: Zotero.EditorInstance) {
   }
   // The editor instance may be destroyed before the promise resolves
   try {
+    resetMarkdownView(editor);
     await injectEditorScripts(getEditorWindow(editor));
     injectEditorCSS(getEditorWindow(editor));
     trackEditorInput(editor);

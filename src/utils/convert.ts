@@ -163,6 +163,15 @@ async function buildExportHeader(
   return header;
 }
 
+/** Strip the outer `<div data-schema-version>` wrapper, as `getNoteStatus` does. */
+function unwrapNoteHTML(html: string) {
+  const meta = html.match(/^<div[^>]*>/);
+  if (!meta || !html.endsWith("</div>")) {
+    return html;
+  }
+  return html.substring(meta[0].length, html.length - "</div>".length);
+}
+
 async function note2md(
   noteItem: Zotero.Item,
   dir: string,
@@ -171,10 +180,16 @@ async function note2md(
     withYAMLHeader?: boolean;
     cachedYAMLHeader?: Record<string, any>;
     skipSavingImages?: boolean;
+    // U26: convert this HTML instead of the note's saved copy — the "View as
+    // Markdown" pane passes the editor's live, possibly unsaved content.
+    noteHTML?: string;
   } = {},
 ) {
-  const noteStatus = addon.api.sync.getNoteStatus(noteItem.id)!;
-  const rehype = await note2rehype(noteStatus.content);
+  const content =
+    options.noteHTML !== undefined
+      ? unwrapNoteHTML(options.noteHTML)
+      : addon.api.sync.getNoteStatus(noteItem.id)!.content;
+  const rehype = await note2rehype(content);
   processN2MRehypeHighlightNodes(
     getN2MRehypeHighlightNodes(rehype as HRoot),
     NodeMode.direct,

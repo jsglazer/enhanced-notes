@@ -83,6 +83,13 @@ editor-toolbar-settings-openParent = Open Attachment
 editor-toolbar-settings-export = Export Current Note...
 editor-toolbar-settings-refreshSyncing = Sync Now
 editor-toolbar-settings-updateRelatedNotes = Update Related Notes
+editor-toolbar-settings-viewMarkdown = View as Markdown
+editor-toolbar-settings-viewRendered = View Rendered Note
+editor-markdownView-label = Markdown (read-only)
+editor-markdownView-copy = Copy Markdown
+editor-markdownView-copied = Markdown copied
+editor-markdownView-loading = Converting…
+editor-markdownView-error = Could not convert this note to Markdown:
 
 templatePicker-itemData-info = are selected in library. Please choose the data source:
 templatePicker-itemData-useLibrary = Use selected items in library
