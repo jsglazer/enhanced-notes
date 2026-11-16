@@ -32,7 +32,7 @@ Metadata:
 
 ```
 citekey: {{ item.citekey }}
-citeshort: ({{ short_auth }} {{ item.year }})
+citeshort: "{{ short_auth }} {{ item.year }}"
 auth: "{{ auth | replace: '"', '\\"' }}"
 title: "{{ item.title | replace: '"', '\\"' }}"
 pubyear: {{ item.year }}
