@@ -410,7 +410,7 @@ test("APSA.liquid: article citation + metadata block", async () => {
     out,
   );
   assert.match(out, /citeshort: \(Handan-Nader et al\. 2026\)/);
-  assert.match(out, /auth: "Cassandra Handan-Nader, Andrew Myers, Andrew Hall"\ntitle: "Polarization and state legislative elections"\n/);
+  assert.match(out, /auth: "Cassandra Handan-Nader, Andrew Myers, and Andrew Hall"\ntitle: "Polarization and state legislative elections"\n/);
   assert.match(out, /publisher: American Journal of Political Science/);
   assert.match(out, /doi: 10\.1111\/ajps\.12973/);
 });
@@ -442,4 +442,16 @@ test("APSA.liquid: auth/title are quoted, inner double quotes escaped", async ()
   );
   const out = await engine.renderTemplate(engine.parseLiquidTemplate(APSA).body, { item });
   assert.match(out, /auth: "Jane Smith"\ntitle: "Why \\"Moderates\\" Win"\n/);
+});
+
+test("APSA.liquid: two authors joined with 'and', no comma", async () => {
+  mockZotero();
+  const item = await model.buildItemModel(
+    mockItem({ title: "T", date: "2020" }, [
+      { firstName: "Bob", lastName: "Smith", creatorTypeID: 1 },
+      { firstName: "Kate M.", lastName: "Jones", creatorTypeID: 1 },
+    ]),
+  );
+  const out = await engine.renderTemplate(engine.parseLiquidTemplate(APSA).body, { item });
+  assert.match(out, /auth: "Bob Smith and Kate Jones"\n/);
 });
