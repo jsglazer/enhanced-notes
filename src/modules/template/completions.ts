@@ -80,6 +80,16 @@ export const ITEM_FIELDS: CompletionEntry[] = [
   f("url", "URL."),
   f("itemType", "Zotero item type name."),
   f("key", "Zotero item key."),
+  f("publicationTitle", "Journal / container title."),
+  f("volume", "Volume."),
+  f("issue", "Issue number."),
+  f("pages", "Page range, e.g. 453-470."),
+  f("publisher", "Publisher."),
+  f("place", "Place of publication."),
+  f(
+    "fields",
+    "Every non-empty Zotero field by name, e.g. item.fields.bookTitle.",
+  ),
 ];
 
 /** Fields on a `note`. Mirrors NoteModel in model.ts. */
@@ -97,6 +107,7 @@ export const CREATOR_FIELDS: CompletionEntry[] = [
   f("name", '"Last, First" when both present, else whichever exists.'),
   f("firstName", "Given name."),
   f("lastName", "Family name."),
+  f("creatorType", 'Creator role, e.g. "author", "editor".'),
 ];
 
 /** Liquid's `forloop` object inside a {% for %}. */

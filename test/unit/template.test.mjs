@@ -316,3 +316,118 @@ test("engine: [ExportMDFileNameV2] empty title → -key.md (no stray whitespace)
   });
   assert.equal(out, "-ABCD1234.md");
 });
+
+// ── Update027: citation fields (publicationTitle/volume/issue/pages/publisher/
+// place/fields) + creatorType, exercised through buildItemModel with a minimal
+// Zotero mock, then rendered end-to-end through docs/examples/APSA.liquid.
+import { readFileSync } from "node:fs";
+
+const CREATOR_TYPES = { 1: "author", 2: "editor" };
+function mockZotero() {
+  globalThis.Zotero = {
+    ItemTypes: { getName: () => "journalArticle" },
+    CreatorTypes: {
+      getName: (id) => {
+        if (!(id in CREATOR_TYPES)) throw new Error("unknown creator type");
+        return CREATOR_TYPES[id];
+      },
+    },
+  };
+}
+function mockItem(fields, creators) {
+  return {
+    key: "ABCD1234",
+    itemTypeID: 1,
+    getField: (f) => fields[f] || "",
+    getUsedFields: () => Object.keys(fields),
+    getCreators: () => creators,
+    getTags: () => [],
+    getCollections: () => [],
+  };
+}
+const AJPS_FIELDS = {
+  title: "Polarization and state legislative elections",
+  date: "2026-04",
+  publicationTitle: "American Journal of Political Science",
+  volume: "70",
+  issue: "2",
+  pages: "453-470",
+  DOI: "10.1111/ajps.12973",
+  url: "https://onlinelibrary.wiley.com/doi/10.1111/ajps.12973",
+  extra: "Citation Key: Handan-Nader-PolarizationStateLegislative-2026",
+};
+const AJPS_CREATORS = [
+  { firstName: "Cassandra", lastName: "Handan-Nader", creatorTypeID: 1 },
+  { firstName: "Andrew C. W.", lastName: "Myers", creatorTypeID: 1 },
+  { firstName: "Andrew B.", lastName: "Hall", creatorTypeID: 1 },
+];
+
+test("buildItemModel: exposes citation fields, item.fields and creatorType", async () => {
+  mockZotero();
+  const m = await model.buildItemModel(mockItem(AJPS_FIELDS, AJPS_CREATORS));
+  assert.equal(m.publicationTitle, "American Journal of Political Science");
+  assert.equal(m.volume, "70");
+  assert.equal(m.issue, "2");
+  assert.equal(m.pages, "453-470");
+  assert.equal(m.publisher, "");
+  assert.equal(m.place, "");
+  assert.equal(m.fields.publicationTitle, "American Journal of Political Science");
+  assert.equal(m.fields.publisher, undefined); // empty fields are omitted
+  assert.deepEqual(
+    m.creators.map((c) => c.creatorType),
+    ["author", "author", "author"],
+  );
+  assert.equal(m.citekey, "Handan-Nader-PolarizationStateLegislative-2026");
+});
+
+test("buildItemModel: unknown/missing creatorTypeID → empty creatorType", async () => {
+  mockZotero();
+  const m = await model.buildItemModel(
+    mockItem({ title: "X" }, [
+      { firstName: "A", lastName: "B", creatorTypeID: 99 },
+      { firstName: "C", lastName: "D" },
+    ]),
+  );
+  assert.deepEqual(m.creators.map((c) => c.creatorType), ["", ""]);
+});
+
+const APSA = readFileSync(
+  fileURLToPath(new URL("../../docs/examples/APSA.liquid", import.meta.url)),
+  "utf8",
+);
+
+test("APSA.liquid: article citation + metadata block", async () => {
+  mockZotero();
+  const item = await model.buildItemModel(mockItem(AJPS_FIELDS, AJPS_CREATORS));
+  const meta = engine.parseLiquidTemplate(APSA);
+  assert.equal(meta.markdown, true);
+  const out = await engine.renderTemplate(meta.body, { item });
+  assert.match(out, /# Handan-Nader-PolarizationStateLegislative-2026--APSA\n\nCitation:\n\n/);
+  assert.ok(
+    out.includes(
+      "Handan-Nader, Cassandra, Andrew C. W. Myers, and Andrew B. Hall. 2026. “Polarization and state legislative elections.” *American Journal of Political Science* 70(2): 453–470. https://doi.org/10.1111/ajps.12973.",
+    ),
+    out,
+  );
+  assert.match(out, /citeshort: \(Handan-Nader et al\. 2026\)/);
+  assert.match(out, /auth: Handan-Nader, Cassandra; Myers, Andrew C\. W\.; Hall, Andrew B\./);
+  assert.match(out, /publisher: American Journal of Political Science/);
+  assert.match(out, /doi: 10\.1111\/ajps\.12973/);
+});
+
+test("APSA.liquid: book excludes editors and uses place: publisher", async () => {
+  mockZotero();
+  const item = await model.buildItemModel(
+    mockItem(
+      { title: "Congress", date: "2004", publisher: "Yale University Press", place: "New Haven" },
+      [
+        { firstName: "David R.", lastName: "Mayhew", creatorTypeID: 1 },
+        { firstName: "Ed", lastName: "Itor", creatorTypeID: 2 },
+      ],
+    ),
+  );
+  const out = await engine.renderTemplate(engine.parseLiquidTemplate(APSA).body, { item });
+  assert.ok(out.includes("Mayhew, David R. 2004. *Congress*. New Haven: Yale University Press."), out);
+  assert.match(out, /citeshort: \(Mayhew 2004\)/);
+  assert.doesNotMatch(out, /Itor/);
+});

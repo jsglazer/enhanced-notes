@@ -55,7 +55,7 @@ The template name's prefix selects the type and the data it receives:
 | Field                                               | Notes                                                                    |
 | --------------------------------------------------- | ------------------------------------------------------------------------ |
 | `item.title`                                        |                                                                          |
-| `item.authors` / `item.creators`                    | array of `{ firstName, lastName, name }` where `name` is `"Last, First"` |
+| `item.authors` / `item.creators`                    | array of `{ firstName, lastName, name, creatorType }` where `name` is `"Last, First"` and `creatorType` is the Zotero role (`"author"`, `"editor"`, …) — filter with `where: "creatorType", "author"` |
 | `item.date`                                         | raw date string                                                          |
 | `item.year`                                         | 4-digit year extracted from the date                                     |
 | `item.tags`                                         | array of tag strings                                                     |
@@ -63,6 +63,10 @@ The template name's prefix selects the type and the data it receives:
 | `item.citekey`                                      | Better BibTeX key → `extra` "Citation Key:" → native `citationKey`       |
 | `item.collections`                                  | array of collection names                                                |
 | `item.doi`, `item.url`, `item.itemType`, `item.key` |                                                                          |
+| `item.publicationTitle`                             | journal / container title                                                |
+| `item.volume`, `item.issue`, `item.pages`           | `pages` as stored in Zotero, e.g. `453-470`                              |
+| `item.publisher`, `item.place`                      |                                                                          |
+| `item.fields`                                       | every non-empty Zotero field keyed by its Zotero name, e.g. `item.fields.bookTitle`, `item.fields.edition` |
 
 ### `note` fields
 
@@ -144,6 +148,8 @@ declared in the header and applied by the engine after rendering. Currently:
 ```
 
 **Item summary** (`[item]`): see the bundled `[item]ItemNoteMD-Liquid` default.
+
+**APSA citation + metadata block** (`[item]`): see [`examples/APSA.liquid`](examples/APSA.liquid) — builds an APSA reference (authors only, editors excluded via `creatorType`) and a `citekey` / `citeshort` / `auth` / `title` / `pubyear` / `publisher` / `url` / `doi` block.
 
 ## Migrating a legacy template
 

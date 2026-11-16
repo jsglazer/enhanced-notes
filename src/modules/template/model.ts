@@ -16,6 +16,8 @@ export interface CreatorModel {
   lastName: string;
   /** "Last, First" when both present, else whichever exists. */
   name: string;
+  /** Zotero creator type, e.g. "author", "editor", "translator". */
+  creatorType: string;
 }
 
 export interface ItemModel {
@@ -33,6 +35,15 @@ export interface ItemModel {
   url: string;
   itemType: string;
   key: string;
+  /** Journal / container title (publicationTitle). */
+  publicationTitle: string;
+  volume: string;
+  issue: string;
+  pages: string;
+  publisher: string;
+  place: string;
+  /** Every non-empty Zotero field on the item, keyed by Zotero field name. */
+  fields: Record<string, string>;
 }
 
 export interface NoteModel {
@@ -109,12 +120,36 @@ export function collectItemAnnotations(item: Zotero.Item): Zotero.Item[] {
 function toCreatorModel(c: {
   firstName?: string;
   lastName?: string;
+  creatorTypeID?: number;
 }): CreatorModel {
   const firstName = (c.firstName || "").trim();
   const lastName = (c.lastName || "").trim();
   const name =
     lastName && firstName ? `${lastName}, ${firstName}` : lastName || firstName;
-  return { firstName, lastName, name };
+  let creatorType = "";
+  try {
+    creatorType =
+      c.creatorTypeID != null
+        ? (Zotero.CreatorTypes.getName(c.creatorTypeID) as string) || ""
+        : "";
+  } catch (e) {
+    // Unknown creator type — leave blank.
+  }
+  return { firstName, lastName, name, creatorType };
+}
+
+/** Every non-empty field on the item, keyed by Zotero field name. */
+function collectFields(item: Zotero.Item): Record<string, string> {
+  const out: Record<string, string> = {};
+  try {
+    for (const f of item.getUsedFields(true) as string[]) {
+      const v = item.getField(f) as string;
+      if (v) out[f] = v;
+    }
+  } catch (e) {
+    // Best-effort; the named fields on the model still work.
+  }
+  return out;
 }
 
 async function collectionNames(item: Zotero.Item): Promise<string[]> {
@@ -146,6 +181,13 @@ export async function buildItemModel(item: Zotero.Item): Promise<ItemModel> {
     url: (item.getField("url") as string) || "",
     itemType: Zotero.ItemTypes.getName(item.itemTypeID),
     key: item.key,
+    publicationTitle: (item.getField("publicationTitle") as string) || "",
+    volume: (item.getField("volume") as string) || "",
+    issue: (item.getField("issue") as string) || "",
+    pages: (item.getField("pages") as string) || "",
+    publisher: (item.getField("publisher") as string) || "",
+    place: (item.getField("place") as string) || "",
+    fields: collectFields(item),
   };
 }
 

@@ -1,0 +1,42 @@
+<!--liquid-->
+<!--markdown-->
+<!--addTags: ItemNote-->
+{%- assign journal = item.publicationTitle -%}
+{%- assign pages = item.pages | replace: "--", "–" | replace: "-", "–" -%}
+{%- assign publisher = item.publisher | default: journal -%}
+{%- assign people = item.creators | where: "creatorType", "author" -%}
+{%- if people.size == 0 -%}{%- assign people = item.creators -%}{%- endif -%}
+{%- capture authors -%}
+{%- for p in people -%}
+{%- if forloop.first -%}{{ p.lastName }}{% if p.firstName != blank %}, {{ p.firstName }}{% endif %}
+{%- elsif forloop.last -%}, and {% if p.firstName != blank %}{{ p.firstName }} {% endif %}{{ p.lastName }}
+{%- else -%}, {% if p.firstName != blank %}{{ p.firstName }} {% endif %}{{ p.lastName }}
+{%- endif -%}
+{%- endfor -%}
+{%- endcapture -%}
+{%- assign last_char = authors | slice: -1 -%}
+{%- capture auth -%}
+{%- for p in people -%}{{ p.name }}{% unless forloop.last %}; {% endunless %}{%- endfor -%}
+{%- endcapture -%}
+{%- if people.size == 1 -%}{%- assign short_auth = people[0].lastName -%}
+{%- elsif people.size == 2 -%}{%- capture short_auth -%}{{ people[0].lastName }} and {{ people[1].lastName }}{%- endcapture -%}
+{%- else -%}{%- capture short_auth -%}{{ people[0].lastName }} et al.{%- endcapture -%}
+{%- endif %}
+# {{ item.citekey }}--APSA
+
+Citation:
+
+{{ authors }}{% unless last_char == "." %}.{% endunless %} {{ item.year }}. {% if journal != blank %}“{{ item.title }}.” *{{ journal }}* {{ item.volume }}{% if item.issue != blank %}({{ item.issue }}){% endif %}: {{ pages }}.{% else %}*{{ item.title }}*. {% if item.place != blank %}{{ item.place }}: {% endif %}{{ item.publisher }}.{% endif %}{% if item.doi != blank %} https://doi.org/{{ item.doi }}.{% endif %}
+
+Metadata:
+
+```
+citekey: {{ item.citekey }}
+citeshort: ({{ short_auth }} {{ item.year }})
+auth: {{ auth }}
+title: {{ item.title }}
+pubyear: {{ item.year }}
+publisher: {{ publisher }}
+url: {{ item.url }}
+doi: {{ item.doi }}
+```
