@@ -410,7 +410,7 @@ test("APSA.liquid: article citation + metadata block", async () => {
     out,
   );
   assert.match(out, /citeshort: \(Handan-Nader et al\. 2026\)/);
-  assert.match(out, /auth: Cassandra Handan-Nader; Andrew Myers; Andrew Hall\n/);
+  assert.match(out, /auth: Cassandra Handan-Nader, Andrew Myers, Andrew Hall\ntitle: /);
   assert.match(out, /publisher: American Journal of Political Science/);
   assert.match(out, /doi: 10\.1111\/ajps\.12973/);
 });
