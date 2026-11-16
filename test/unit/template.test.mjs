@@ -410,7 +410,7 @@ test("APSA.liquid: article citation + metadata block", async () => {
     out,
   );
   assert.match(out, /citeshort: \(Handan-Nader et al\. 2026\)/);
-  assert.match(out, /auth: Handan-Nader, Cassandra; Myers, Andrew C\. W\.; Hall, Andrew B\./);
+  assert.match(out, /auth: Cassandra Handan-Nader; Andrew Myers; Andrew Hall\n/);
   assert.match(out, /publisher: American Journal of Political Science/);
   assert.match(out, /doi: 10\.1111\/ajps\.12973/);
 });
@@ -429,5 +429,6 @@ test("APSA.liquid: book excludes editors and uses place: publisher", async () =>
   const out = await engine.renderTemplate(engine.parseLiquidTemplate(APSA).body, { item });
   assert.ok(out.includes("Mayhew, David R. 2004. *Congress*. New Haven: Yale University Press."), out);
   assert.match(out, /citeshort: \(Mayhew 2004\)/);
+  assert.match(out, /auth: David Mayhew\n/);
   assert.doesNotMatch(out, /Itor/);
 });
