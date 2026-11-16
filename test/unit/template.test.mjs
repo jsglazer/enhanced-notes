@@ -410,7 +410,7 @@ test("APSA.liquid: article citation + metadata block", async () => {
     out,
   );
   assert.match(out, /citeshort: \(Handan-Nader et al\. 2026\)/);
-  assert.match(out, /auth: Cassandra Handan-Nader, Andrew Myers, Andrew Hall\ntitle: /);
+  assert.match(out, /auth: "Cassandra Handan-Nader, Andrew Myers, Andrew Hall"\ntitle: "Polarization and state legislative elections"\n/);
   assert.match(out, /publisher: American Journal of Political Science/);
   assert.match(out, /doi: 10\.1111\/ajps\.12973/);
 });
@@ -429,6 +429,17 @@ test("APSA.liquid: book excludes editors and uses place: publisher", async () =>
   const out = await engine.renderTemplate(engine.parseLiquidTemplate(APSA).body, { item });
   assert.ok(out.includes("Mayhew, David R. 2004. *Congress*. New Haven: Yale University Press."), out);
   assert.match(out, /citeshort: \(Mayhew 2004\)/);
-  assert.match(out, /auth: David Mayhew\n/);
+  assert.match(out, /auth: "David Mayhew"\ntitle: "Congress"\n/);
   assert.doesNotMatch(out, /Itor/);
+});
+
+test("APSA.liquid: auth/title are quoted, inner double quotes escaped", async () => {
+  mockZotero();
+  const item = await model.buildItemModel(
+    mockItem({ title: 'Why "Moderates" Win', date: "2020" }, [
+      { firstName: "Jane Q.", lastName: "Smith", creatorTypeID: 1 },
+    ]),
+  );
+  const out = await engine.renderTemplate(engine.parseLiquidTemplate(APSA).body, { item });
+  assert.match(out, /auth: "Jane Smith"\ntitle: "Why \\"Moderates\\" Win"\n/);
 });
