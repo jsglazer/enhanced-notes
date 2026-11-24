@@ -12,6 +12,28 @@ updates:
       # typescript-eslint's peer range does not include TypeScript 7 yet; a major bump breaks `npm ci`.
       - dependency-name: typescript
         update-types: ['version-update:semver-major']
+      # zotero-types >= 4.1.3 types Zotero.Items.get() as `false | Item` (58 type errors in 30 files).
+      # Adopt it in a planned update that adds the null checks, then drop this ignore.
+      - dependency-name: zotero-types
+      # ESLint 10 / typescript-eslint 8 need a flat-config migration of the lint setup.
+      - dependency-name: eslint
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@typescript-eslint/*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: eslint-config-prettier
+        update-types: ['version-update:semver-major']
+      # The HTML<->Markdown converter is built on unified 10; rehype-parse 9 / rehype-format 5 need unified 11.
+      # Move the whole family together in a planned update.
+      - dependency-name: unified
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'rehype-*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'remark-*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'mdast-*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'hast-*'
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: github-actions
     directory: '/'
