@@ -53,7 +53,7 @@
     "liquidjs": "^10.27.0",
     "path-browserify": "^1.0.1",
     "prosemirror-inputrules": "^1.5.1",
-    "prosemirror-tables": "^1.7.1",
+    "prosemirror-tables": "^1.8.5",
     "rehype-format": "^4.0.1",
     "rehype-parse": "^8.0.5",
     "rehype-remark": "^9.1.2",
