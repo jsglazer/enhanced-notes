@@ -36,6 +36,9 @@ updates:
         update-types: ['version-update:semver-major']
       - dependency-name: hastscript
         update-types: ['version-update:semver-major']
+      # toolkit 6 removed MenuManager and retyped menu callbacks; migrate in a planned update.
+      - dependency-name: zotero-plugin-toolkit
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: github-actions
     directory: '/'

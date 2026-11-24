@@ -18,9 +18,8 @@ import { visit } from "unist-util-visit";
 import { visitParents } from "unist-util-visit-parents";
 import { h } from "hastscript";
 
-import { Root as HRoot, RootContent } from "hast";
+import { Nodes, Root as HRoot, RootContent } from "hast";
 import { ListContent, Root as MRoot, TableContent } from "mdast";
-import { Nodes } from "hast-util-to-text/lib";
 
 import { diffChars } from "diff";
 
