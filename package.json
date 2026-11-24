@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/jsglazer/enhanced-notes",
   "dependencies": {
-    "@codemirror/autocomplete": "^6.20.3",
+    "@codemirror/autocomplete": "^6.20.4",
     "@codemirror/commands": "^6.11.1",
     "@codemirror/lang-markdown": "^6.5.0",
     "@codemirror/language": "^6.13.1",
