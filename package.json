@@ -55,7 +55,7 @@
     "prosemirror-inputrules": "^1.5.1",
     "prosemirror-tables": "^1.7.1",
     "rehype-format": "^4.0.1",
-    "rehype-parse": "^8.0.5",
+    "rehype-parse": "^9.0.1",
     "rehype-remark": "^9.1.2",
     "rehype-stringify": "^9.0.4",
     "remark-gfm": "^3.0.1",
