@@ -65,7 +65,7 @@
     "remark-stringify": "^10.0.3",
     "tree-model": "^1.0.7",
     "unified": "^10.1.2",
-    "unist-util-visit": "^5.0.0",
+    "unist-util-visit": "^5.2.0",
     "unist-util-visit-parents": "^6.0.1",
     "yaml": "^2.8.1",
     "zotero-plugin-toolkit": "^5.1.0-beta.4"
