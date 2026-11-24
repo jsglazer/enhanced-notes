@@ -1,0 +1,24 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      dev-dependencies:
+        dependency-type: development
+    ignore:
+      # typescript-eslint's peer range does not include TypeScript 7 yet; a major bump breaks `npm ci`.
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly
+    # One PR for all actions: github/codeql-action's init/analyze/upload-sarif must move together,
+    # and separate PRs leave them on mismatched versions so every one fails.
+    groups:
+      actions:
+        patterns: ['*']
