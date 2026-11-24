@@ -44,7 +44,7 @@
     "diff": "^5.2.2",
     "hast-util-to-html": "^9.0.7",
     "hast-util-to-mdast": "^8.4.1",
-    "hast-util-to-text": "^4.0.2",
+    "hast-util-to-text": "^4.0.5",
     "hastscript": "^8.0.0",
     "highlight.js": "^11.12.0",
     "html-docx-js": "^0.3.1",
