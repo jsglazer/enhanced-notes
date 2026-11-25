@@ -40,7 +40,7 @@
     "@codemirror/language": "^6.13.1",
     "@codemirror/state": "^6.7.6",
     "@codemirror/view": "^6.43.15",
-    "dexie": "^4.0.11",
+    "dexie": "^4.4.7",
     "diff": "^9.0.0",
     "hast-util-to-html": "^9.0.7",
     "hast-util-to-mdast": "^8.4.1",
